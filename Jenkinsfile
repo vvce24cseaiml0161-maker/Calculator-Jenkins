@@ -36,14 +36,25 @@ pipeline {
                 }
             }
         }
+  
+
+    stage('SonarQube Analysis') {
+            steps {
+                echo 'Starting SonarQube analysis'
+                withSonarQubeEnv('SonarQube-Local') {
+                    bat 'mvn sonar:sonar'
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ CI Pipeline completed flawlessly! Code stability confirmed.'
+            echo 'Build and SonarQube analysis completed!'
         }
         failure {
-            echo '❌ CI Pipeline broken. Check console logs for build failures or breaking test regressions.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
+
 }
